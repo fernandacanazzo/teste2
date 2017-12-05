@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src='config2.js'></script>
+<script type='text/javascript' src='script.js'></script>
+        <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="bootstrap-3.3.7-dist/css/shop-homepage.css" rel="stylesheet">
+        <title>App</title>
+        <style>
+
+            a:hover{
+                text-decoration: underline;
+
+            }
+
+            .table-responsive {
+                max-height:380px;
+            }
+
+
+
+
+        </style>
+
+    </head>
+    <body style="background-color: #f7f7f7">
+
+        <script>
+            var accessToken;
+            var string = [];
+
+            window.fbAsyncInit = function () {
+               
+               
+               // document.getElementById('texto2').innerHTML = '';
+                
+                var search = 'jogos';
+                
+                //#d4e6f2       
+
+                FB.init({
+                    appId: mykey,
+                    autoLogAppEvents: true,
+                    xfbml: true,
+                    version: 'v2.10'
+                });
+                FB.AppEvents.logPageView();
+                if (search !== null) {
+                    function getInfo(search, token) {
+                        var url = "";
+                        url = "search?q=\"" + search + "\"&type=group&limit=250&fields=picture,name,privacy,description&access_token=" + token;
+                        FB.api(
+                                "/" + url, function (response) {
+                                    var l = response.data.length;
+                                    var i = 0;
+                                    y=0;
+                                    for (i; i < l; i++) {
+                                        if (response.data[i].privacy === "OPEN") {
+                                            string[y] = "nome_;_" + response.data[i].name + "_;_id_;_" + response.data[i].id
+                                                    + "_;_descricao_;_" + response.data[i].description + "_;_foto_;_" + response.data[i].picture.data.url;
+                                            y++;
+                                        }
+                                    }
+                                    hide = "nao";
+                                });
+                        
+                        return string[0];
+                    }
+                }
+
+                FB.getLoginStatus(function (response) {
+                    if (response.status === 'connected') {
+                        accessToken = response.authResponse.accessToken;
+                        var token = accessToken.toString();
+                        var res = getInfo(search, token);
+                        var cnt = 0;
+                        document.getElementById('lala').innerHTML = 'oooi';
+
+                    } else {
+                    }
+                    //return token;
+                });
+            }
+
+            ;
+
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/pt_BR/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+        </script>
+        <div id='lala'>ola</div>
+       
+    </body>
+</html>
+
+
