@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="bootstrap-3.3.7-dist/css/shop-homepage.css" rel="stylesheet">
+
+        <title>App</title>
+        <style>
+
+            .table-responsive {
+                max-height:300px;
+            }
+
+
+        </style>
+
+    </head>
+    <body style="background-color: #f7f7f7">
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="margin-top: 4px;" href="http://www.localhostfer.com/AppFer2/web/index.html"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        <h2 id="nome"></h2>
+
+                       
+
+        <script type="text/javascript">
+            var id_grupo = localStorage.getItem("id_grupo");
+            array = id_grupo.split('_;_', 2);
+            document.getElementById('nome').innerHTML = "O que você quer visualizar no grupo <b>" + array[1] + "</b>?";
+
+
+        </script>
+    </body>
+</html>
+
+
