@@ -48,7 +48,7 @@
                     version: 'v2.10'
                 });
                 FB.AppEvents.logPageView();
-                if (search !== null) {
+               // if (search !== null) {
                     function getInfo(token) {
                         var url = "";
                         url = "search?q=\"" + 'jogos' + "\"&type=group&limit=250&fields=picture,name,privacy,description&access_token=" + token;
@@ -70,7 +70,7 @@
                                 });
                         
                         return string[0];
-                    }
+                    //}
                 }
 
                 FB.getLoginStatus(function (response) {
