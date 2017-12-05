@@ -39,7 +39,7 @@
                
                // document.getElementById('texto2').innerHTML = '';
                 
-                var search = 'jogos';
+               
                 
                 //#d4e6f2       
 
@@ -53,7 +53,7 @@
                 if (search !== null) {
                     function getInfo(search, token) {
                         var url = "";
-                        url = "search?q=\"" + search + "\"&type=group&limit=250&fields=picture,name,privacy,description&access_token=" + token;
+                        url = "search?q=\"" + 'jogos' + "\"&type=group&limit=250&fields=picture,name,privacy,description&access_token=" + token;
                         FB.api(
                                 "/" + url, function (response) {
                                     var l = response.data.length;
@@ -63,7 +63,9 @@
                                         if (response.data[i].privacy === "OPEN") {
                                             string[y] = "nome_;_" + response.data[i].name + "_;_id_;_" + response.data[i].id
                                                     + "_;_descricao_;_" + response.data[i].description + "_;_foto_;_" + response.data[i].picture.data.url;
+                                            document.getElementById('lala').innerHTML += string[y];
                                             y++;
+                                            
                                         }
                                     }
                                     hide = "nao";
