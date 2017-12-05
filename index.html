@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <link href="bootstrap.min.css" rel="stylesheet">
+        <link href="shop-homepage.css" rel="stylesheet">
+        <title>App</title>
+        <style>
+
+            a:hover{
+                text-decoration: underline;
+
+            }
+
+            .table-responsive {
+                max-height:380px;
+            }
+
+
+
+
+        </style>
+
+    </head>
+    <body style="background-color: #f7f7f7">
+
+        <script>
+
+
+            var hide = "sim";
+            //var y = 0;
+            var accessToken;
+            var string = [];
+            var string2 = [];
+            var y = 0;
+             
+            function clicarBotao() {
+               string = [];
+               string2 = []; 
+                if (document.getElementById('painel2').style.display === "block") {
+                    document.getElementById('painel2').style.display = "none";
+                }
+                if (document.getElementById('aviso4').style.display === "block") {
+                    document.getElementById('aviso4').style.display = "none";
+                } else {
+                    document.getElementById('aviso3').style.display = "block";
+                    document.getElementById('bt_principal').className = "btn btn-primary disabled";
+                    setTimeout(function () {
+                        document.getElementById('bt_principal').className = "btn btn-primary";
+                        document.getElementById('aviso3').style.display = "none";
+                        
+                        window.fbAsyncInit();
+                    }, 15000);
+                }
+            }
+
+            window.fbAsyncInit = function () {
+               
+               
+               // document.getElementById('texto2').innerHTML = '';
+                
+                var search = $("#pesquisa").val();
+                
+                //#d4e6f2       
+
+                FB.init({
+                    appId: '149129182478024',
+                    autoLogAppEvents: true,
+                    xfbml: true,
+                    version: 'v2.10',
+                });
+                FB.AppEvents.logPageView();
+                if (search !== null) {
+                    function getInfo(search, token) {
+                        var url = "";
+                        url = "search?q=\"" + search + "\"&type=group&limit=250&fields=picture,name,privacy,description&access_token=" + token;
+                        FB.api(
+                                "/" + url, function (response) {
+                                    var l = response.data.length;
+                                    var i = 0;
+                                    y=0;
+                                    for (i; i < l; i++) {
+                                        if (response.data[i].privacy === "OPEN") {
+                                            string[y] = "nome_;_" + response.data[i].name + "_;_id_;_" + response.data[i].id
+                                                    + "_;_descricao_;_" + response.data[i].description + "_;_foto_;_" + response.data[i].picture.data.url;
+                                            y++;
+                                        }
+                                    }
+                                    hide = "nao";
+                                });
+
+
+                        
+                        var string2 = [];
+                        var array = [];
+                        for (var j = 0; j < string.length; j++) {
+                            array = string[j].split('_;_', 8);
+                            
+                            string2[j] = '<img src="' + array[7] + '" style="border:3px solid white"></img>_;_descricao_;_' + array[5] + "_;_id_;_" + array[3] + "_;_nome_;_" + array[1];
+                        }
+                        console.log(string);
+                        return string2;
+                    }
+                }
+
+                FB.getLoginStatus(function (response) {
+                    if (response.status === 'connected') {
+                        accessToken = response.authResponse.accessToken;
+                        var token = accessToken.toString();
+                        var res = getInfo(search, token);
+                        var array3 = [];
+                        var cnt = 0;
+                       
+
+
+                        if (y > 0) {
+                             
+                            document.getElementById('painel2').style.display = "block";
+                            document.getElementById('titulo').style.display = "block";
+                           document.getElementById('texto2').innerHTML = '';
+                           console.log(res);
+                            document.getElementById('titulo').innerHTML = "<b>Grupos encontrados que contem '" + search + "'*</b><br><p style=\"font-size:small\">*Podem ser encontrados até 250 grupos</p>";
+
+                            var str3 = "";
+                            for (cnt; cnt < res.length; cnt++) {
+                                array3 = res[cnt].split('_;_', 7);
+                                var desc = "Descrição: " + array3[2];
+                                console.log(res.length);
+                                if (array3[2] === 'undefined')
+                                    desc = "Não há uma descrição para este grupo";
+                                str3 += '<a title="' + desc + '" href="https://fernandacanazzo.github.io/teste2/index.html" class="list-group-item" name="grupos" value="' + array3[4] + "_;_" + array3[6] + '" >' + array3[0] + ' ' + array3[6] + '</a> ' +
+                                        '<a  href="http://www.facebook.com/groups/' + array3[4] + '"" target="_blank" class="list-group-item" name="grupos" style="display: block; font-size:small; height: 36px;background-color:#f9f9f9;color:#158cba"><span class="glyphicon glyphicon-eye-open" style="margin-right: 6px;"></span> <b>Ver grupo no Facebook</b></a>';
+
+                            }
+                             document.getElementById('texto2').innerHTML = str3;
+                            $(".list-group a").click(function () {
+                                var id_grupo;
+                                id_grupo = $(this).attr("value"); //add id to array
+                                localStorage.setItem("id_grupo", id_grupo);
+                            });
+                            if (hide !== "sim") {
+
+                            }
+
+                        }
+
+                        document.getElementById('status').innerHTML = '<p class="text-primary"><span class="glyphicon glyphicon-ok-sign" style="margin-right: 6px;"></span>Você está conectado(a)</p>';
+
+                    } else {
+                        document.getElementById('face').style.display = "block";
+                        document.getElementById('logar').style.display = "block";
+                        document.getElementById('status').innerHTML = '<p class="text-danger"><span class="glyphicon glyphicon-remove-sign" style="margin-right: 6px;"></span>Você não está conectado(a)</p>';
+                    }
+                    //return token;
+                });
+            }
+
+            ;
+
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/pt_BR/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            function grupo() {
+                var id_grupo;
+                $(".list-group a").click(function () {
+                    id_grupo = $(this).text(); //add id to array
+                });
+                localStorage.setItem("id_grupo", id_grupo);
+
+                return location.href = 'https://fernandacanazzo.github.io/teste2/index.html';
+            }
+
+        </script>
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="margin-top: 4px;" href="https://fernandacanazzo.github.io/teste2/"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <div class="container">
+            <br><br>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="panel" style="height: 100%; width: 100%; background-color: #fefefe">
+                        <div class="panel-heading" style="background-color:#333333">
+                            <div class="panel-title" style="font-size:large;color:white">Pesquisar</div>
+                        </div>
+                        <div class="panel-body" id="painel">
+                            <div class="input-group input-group-lg" id="pesq">
+                                <input type="text" id="pesquisa" class="form-control" placeholder="Digite o que quer pesquisar">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" id="bt_principal" type="submit" onclick="window.fbAsyncInit(); clicarBotao();"><span class="glyphicon glyphicon-search"></span></button>
+                                </span> 
+
+                            </div>
+                            <div id="aviso3" class="text-center" style="display:none; margin-top:18px"><b>Pesquisando grupos...</b></div>
+                            <div id="aviso4" class="text-center" style="display:none;margin-top:18px"></div>
+                            
+                        </div>
+
+
+                    </div>
+
+                    <div class="panel panel-primary" id="painel2" style="display:none; height: 100%; width: 100%; background-color: #fcfcfc">
+                        <div class="panel-body table-responsive">
+                            <h4 id="titulo" style="display:none"></h4>
+                            <div id="texto2" class="list-group"> 
+                            </div>  
+
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary text-center" style="height: 100%; width: 100%; background-color: #fefefe">
+                        <div class="panel-body">
+                            <h4 id="status"></h4>
+                            <div class="text-primary" id="logar" style="display:none">Para utilizar a aplicação, é necessário se conectar com o Facebook</div>
+                            <div class="fb-login-button" id="face" data-max-rows="1" data-size="large" style="display:none; margin-top: 8px" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>
+
+
