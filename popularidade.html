@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/shop-homepage.css" rel="stylesheet">
+        <title>App</title>
+        <style>.fixed-panel {
+                max-height: 570px;
+                overflow-y: auto;
+            }
+            .bar{
+                fill: #A02974;
+                shape-rendering: crispEdges;
+            }
+
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: #000;
+                shape-rendering: crispEdges;
+            }
+
+            .x.axis path {
+                display: none;
+            }
+
+        </style>
+
+    </head>
+    <body style="background-color: #f7f7f7">
+
+        <script type="text/javascript">
+            var id = localStorage.getItem("id_grupo");
+            var arrayid = [];
+            arrayid = id.split('_;_', 2);
+            var string = [];
+            var string2 = [];
+            var string3 = [];
+            var string4 = [];
+            var mem_count = "";
+
+            var hide = "sim";
+            function clicarBotao() {
+                var num = $("#numero").val();
+                
+                if (document.getElementById('aviso4').style.display === "block") {
+                    document.getElementById('aviso4').style.display = "none";
+                } else {
+                    document.getElementById('aviso3').style.display = "block";
+                    document.getElementById('bt_principal').className = "btn btn-xs btn-primary text-center disabled";
+                    setTimeout(function () {
+                        document.getElementById('bt_principal').className = "btn btn-xs btn-primary text-center";
+                        document.getElementById('aviso3').style.display = "none";
+                        if (parseInt(num) > parseInt(localStorage.getItem("numero", numero))) {
+                            document.getElementById('aviso').style.display = "block";
+                            document.getElementById('aviso').style.color = "red";
+                            document.getElementById('aviso').innerHTML = "<b>Você escolheu ver até " + localStorage.getItem("numero", numero)
+                            + " publicações</b>";
+                            document.getElementById('aviso3').style.display = "none";
+                        } else {
+                            window.fbAsyncInit();
+                            location.href = 'https://fernandacanazzo.github.io/teste2/vis_popularidade.html';
+
+                        }
+                    }, 50000);
+                }
+            }
+
+            window.fbAsyncInit = function () {
+                var numero2 = $("#numero").val();
+                localStorage.setItem("numero2", numero2);
+                var y = 0;
+                var a = 0;
+                var b = 0;
+                var c = 0;
+                
+                FB.init({
+                    appId: '149129182478024',
+                    autoLogAppEvents: true,
+                    xfbml: true,
+                    version: 'v2.10'
+                });
+                FB.AppEvents.logPageView();
+
+                function getCount(token) {
+                    var url = "";
+                    url = "/members?summary=true&access_token=";
+
+                    FB.api(
+                            "/" + arrayid[0] + url + token, function (response) {
+                        mem_count = response.summary.total_count;
+                    });
+                    return mem_count;
+
+                }
+
+                function getInfo2(token) {
+                    var url = "";
+                    url = "/feed?fields=reactions.summary(true),comments.summary(true), message, created_time&limit=50&access_token=";
+                    var cn = 0;
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 20 && typeof response.paging !== "undefined" || typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+
+                            var l = response.data.length;
+                            var i = 0;
+                            for (i; i < l; i++) {
+
+                                var reacoes = response.data[i].reactions.summary.total_count;
+                                var comentarios = response.data[i].comments.summary.total_count;
+                                var id_post = response.data[i].id.split('_', 2);
+                                var data_hora = response.data[i].created_time.split('T', 2);
+                                var data = data_hora[0].split('-', 3);
+                                var hora = data_hora[1].split(':', 3);
+
+                                string2[y] = data[2] + "_;_" + data[1] + "_;_" + data[0] + hora[0] + hora[1] + hora[2] + "reacoes_;_" + reacoes
+                                        + "_;_comentarios_;_" + comentarios + "_;_numero_;_" + numero + "_;_id_;_" + id_post[1] + "_;_descricao_;_" + response.data[i].message;
+                                
+                                y++;
+                            }
+                            cn++;
+                            hide = "nao";
+                        }
+
+                    }
+                    console.log(string2);
+                    return string2;
+                    
+                }
+
+                
+
+                FB.getLoginStatus(function (response) {
+                    if (response.status === 'connected') {
+                        accessToken = response.authResponse.accessToken;
+                        var token = accessToken.toString();
+                        var string_total = [];
+                        var string_total2 = [];
+                        var string_total3 = [];
+                        var string_total4 = [];
+                        var res = [];
+                        var mem_count2 = getCount(token);
+                        string_total = getInfo2(token);
+                        res = string_total;
+
+                        var str = "";
+                        var qtd = 0;
+                        var total = 0;
+                        var dados_posts2 = "[";
+                        var ctd = 1;
+                        var descricoes = [];
+                        function naturalCompare(b, a) {
+                            var ax = [], bx = [];
+
+                            a.replace(/(\d+)|(\D+)/g, function (_, $1, $2) {
+                                ax.push([$1 || Infinity, $2 || ""])
+                            });
+                            b.replace(/(\d+)|(\D+)/g, function (_, $1, $2) {
+                                bx.push([$1 || Infinity, $2 || ""])
+                            });
+
+                            while (ax.length && bx.length) {
+                                var an = ax.shift();
+                                var bn = bx.shift();
+                                var nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+                                if (nn)
+                                    return nn;
+                            }
+
+                            return ax.length - bx.length;
+                        }
+
+                        res = res.sort(naturalCompare);
+
+
+                        for (i = 0; i < res.length; i++) {
+                                str = res[i].split('_;_', 12);
+                                str[11] = str[11].replace(/(\r\n|\n|\r|\f|\"|\\)/gm, " ");
+                                str[11] = str[11].replace("undefined", "Essa publicação não possui uma descrição");
+                                total = ((parseInt(str[3]) + parseInt(str[5])) / parseInt(mem_count2)) * 100;
+                                qtd++;
+                                 dados_posts2 += "{\"cont\":\"" + qtd + "\",\"size\":" + total + ",\"id\":\"" + str[9] + "\",\"desc\":\"" + str[11] + "\",\"reacoes\":\"" + str[3] + "\",\"comentarios\":\"" + str[5] + "\",\"dia\":\"" + str[0] + "\",\"mes\":\"" + str[1] + "\"},";
+                                
+                                ctd++;
+                        }
+
+
+                        dados_posts2 = dados_posts2.replace(/,$/, '');
+                        dados_posts2 += "]";
+
+                        localStorage.setItem("dados_posts2", dados_posts2);
+                        console.log(dados_posts2);
+                        if (hide !== "sim") {
+
+                        }
+                    } else {
+                        var nada = "";
+                    }
+                });
+
+            }
+            ;
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/pt_BR/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+
+
+        </script>
+
+        <script type="text/javascript"></script>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="margin-top: 4px;" href="https://fernandacanazzo.github.io/teste2/index.html"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="panel panel-primary" style="width: 100%; background-color: #fefefe;margin-top:50px; ">
+                        <div class="panel-body text-center" style="background-color: #333333;height:60px; border-style: double">
+                            <h3 class="" style="margin: auto;color:#fefefe"><span class="glyphicon glyphicon-star " style=" margin-right: 6px;"></span>N publicações mais populares</h4>
+
+                        </div>  
+
+                        <div class="panel-body text-center" style="">
+
+                            <div style="font-size:large; margin-bottom:10px;color:#919191">Digite o número de publicações que você quer ver
+
+                            </div>
+                            <div id="aviso" class="text-center" style="font-size:small; display:none; margin-bottom:10px;color:#919191">
+                            </div>
+
+                            <input type="text" style="width:60%; margin:auto" id="numero" class="form-control text-center input-lg" placeholder="">
+                            <div id="aviso3" class="text-center" style="display:none; margin-top:18px"><b>Procurando publicações... por favor aguarde alguns segundos</b></div>
+                            <div id="aviso4" class="text-center" style="display:none;margin-top:18px"></div>
+                            <button class="btn btn-xs btn-primary text-center" id="bt_principal" style="margin-top:18px; height:52px; width:52px; border-radius: 50%; font-size:x-large" type="submit" onclick="window.fbAsyncInit(); clicarBotao();">OK</button>
+                            <div class="text-left">
+                                <button class="btn btn-xs btn-default text-left"  style="font-size:large;border-bottom-style:none; height:32px; width:32px;border-radius: 50%;" type="button" onclick="location.href = 'https://fernandacanazzo.github.io/teste2/menu.html';"><span class="glyphicon glyphicon-arrow-left" style="color:#333333"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </body>
+</html>
+
+

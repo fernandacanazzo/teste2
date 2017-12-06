@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/shop-homepage.css" rel="stylesheet">
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+
+        <title>App</title>
+        <style>
+            .fixed-panel {
+                
+                overflow-y: auto;
+            }
+
+            .legend {
+                border: 1px solid #555555;
+                border-radius: 5px 5px 5px 5px;
+                font-size: 0.8em;
+                margin: 10px;
+                padding: 8px;
+            }
+            .bld {
+                font-weight: bold;
+                
+            }
+            .bar{
+                fill: #03396c;
+                shape-rendering: crispEdges;
+            }
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: #000;
+                shape-rendering: crispEdges;
+            }
+             .x.axis path {
+                display: none;
+            }
+            
+
+
+	</style>
+</head>
+
+    <body style="background-color: #f7f7f7">
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="margin-top: 4px;" href="https://fernandacanazzo.github.io/teste2/index.html"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1">                          
+                    <button class="btn btn-xs btn-default text-left" id="voltar" style="display:block; position: fixed; margin-top:10px;font-size:x-large;border-bottom-style:none; height:42px; width:42px;border-radius: 50%;" type="button" onclick="location.href = 'https://fernandacanazzo.github.io/teste2/menu.html';"><span class="glyphicon glyphicon-arrow-left" style="color:#333333"></span></button>
+                </div></div>
+            <div class="row">
+
+                
+                <div class="col-md-11 col-md-offset-1">
+                    <div class= "panel text-left" id="cloud_01" style="height: 100%; background-color: #fdfdfd">
+                        
+
+                        <div class="panel-body fixed-panel">
+
+                           <h3 style="margin-left: 10px; margin-bottom:30px" class="text-primary" id="titulo_res"></h3>
+
+
+
+                            <div id ="graf_c"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+	
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>
+    
+    var frequency_list = localStorage.getItem("dados_reacoes2");
+   data = JSON.parse(frequency_list);
+   console.log(localStorage.getItem("dados_reacoes2"));
+           
+            document.getElementById('titulo_res').innerHTML = "Reações às " + localStorage.getItem("numero") + ' publicações mais recentes*<p style="font-size: small;margin-top:6px">*Últimas publicações que foram comentadas por alguém</p>';
+            
+// set the dimensions of the canvas
+var margin = {top: 20, right: 20, bottom: 50, left: 60},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+
+// set the ranges
+var x = d3.scale.ordinal().rangeRoundBands([0, width], .5);
+
+var y = d3.scale.linear().range([height, 0]);
+
+// define the axis
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .tickSize(0)
+    .orient("bottom")
+
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+    
+
+// add the SVG element
+var svg = d3.select("#graf_c").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .style("float", "left")
+  .append("g")
+    .attr("transform", 
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+// load the data
+//d3.json("data.json", function(error, data) {
+
+    data.forEach(function(d) {
+        d.name = d.name;
+        d.value = +d.value;
+    });
+	
+  // scale the range of the data
+  x.domain(data.map(function(d) { return d.name; }));
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+  // add axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .selectAll("text")
+      .attr("transform", "rotate(0)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "middle")
+      .style('font-weight','light')
+
+  svg.append("g")
+     .attr("class", "y axis")
+      .style('opacity','0')
+      .call(yAxis)
+
+   
+    svg.select('.y').transition().duration(500).delay(1300).style('opacity','1');
+    
+
+
+  // Add bar chart
+  svg.selectAll("bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.name); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.value); })
+
+      .attr("height", function(d) { return height - y(d.value); })
+      .append("title")
+      .text(function (d, i) {
+        return d.value + "\n" + d.porc.toFixed(1) + "%";
+       });
+       svg.select(".axis").selectAll("text").remove();
+       svg.selectAll(".x .tick").each( function(d) {
+         console.log("d", d);
+         var p = d3.select(this);
+         p.append("svg:image")
+         .attr("x", -9)
+         .attr("y", 6)
+         .attr("dy", ".35em")
+         .attr("width", 30)
+         .attr("height", 30)
+         
+         .attr("xlink:href","reactions/" + d + ".png"
+       
+);   });
+      
+
+</script>
+
+
+</body>

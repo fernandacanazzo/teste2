@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/shop-homepage.css" rel="stylesheet">
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="d3.layout.cloud.js"></script>
+
+        <title>App</title>
+        <style>
+            .fixed-panel {
+                
+                overflow-y: auto;
+            }
+
+            .legend {
+                border: 1px solid #555555;
+                border-radius: 5px 5px 5px 5px;
+                font-size: 0.8em;
+                margin: 10px;
+                padding: 8px;
+            }
+            .bld {
+                font-weight: bold;
+            }
+        </style>
+
+    <body style="background-color: #f7f7f7">
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="margin-top: 4px;" href="http://www.fernandacanazzo.github.io/teste2/index.html"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1">                          
+                    <button class="btn btn-xs btn-default text-left" id="voltar" style="display:block; position: fixed; margin-top:10px;font-size:x-large;border-bottom-style:none; height:42px; width:42px;border-radius: 50%;" type="button" onclick="location.href = 'http://www.fernandacanazzo.github.io/teste2/menu.html';"><span class="glyphicon glyphicon-arrow-left" style="color:#333333"></span></button>
+                </div></div>
+            <div class="row">
+
+                <div class="col-md-6 col-md-offset-3">
+
+                    <div class= "panel panel-primary " id="panel_aviso" style="display:none; height: 100%; width: 100%; background-color: #fefefe">
+                        <div class="panel-body fixed-panel">
+
+                            <h3 class="text-primary text-center" id="titulo_aviso"></h3>
+                            <div style="color:#7c7c7c">Para tentar encontrar publicações, você pode <br>
+
+                                &#9679 Verificar o nome digitado para que esteja igual ao nome da pessoa no Facebook</div>
+
+
+                        </div>
+                        <button class="btn btn-xs btn-default text-left"  style="margin: 15px; font-size:large;border-bottom-style:none; height:32px; width:32px;border-radius: 50%;" type="button" onclick="location.href = 'http://www.fernandacanazzo.github.io/teste2/menu.html';"><span class="glyphicon glyphicon-arrow-left" style="color:#333333"></span></button>
+
+
+                    </div>
+                </div>
+
+                <div class="col-md-8 col-md-offset-2">
+
+                    <div class= "panel panel-primary text-left" id="panel_01" style="display:none;  overflow-y: auto; max-height: 400px; width: 100%; background-color: #fefefe">
+                        <div class="panel-body fixed-panel">
+
+
+                            <h3 style="margin-left: 10px; " class="text-primary" id="titulo_res"></h3>
+
+                            <table class="table table-striped" style="margin-top:20px;" data-toggle="tooltip" id="texto"><tbody id="resp"></tbody></table>  
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class= "panel text-center" id="cloud_01" style="display:none;max-height: 450px;  overflow-y: auto; background-color: #fdfdfd">
+                        <div class="panel-heading" style="background-color:#333333">
+                            <div class="panel-title" id="subtitulo" style="font-size:large;color:white"></div>
+                        </div>
+
+                        <div class="panel-body fixed-panel">
+
+
+
+                            <div id ="cloud_c"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            var numero = localStorage.getItem("numero1");
+            var nome = localStorage.getItem("nome1");
+            var quant = localStorage.getItem("quant");
+            var str_pronta = localStorage.getItem("str_pronta");
+            var teste2 = [];
+            var mult = 1.0;
+
+            if (parseInt(quant) > 0) {
+                document.getElementById('panel_01').style.display = "block";
+                document.getElementById('cloud_01').style.display = "block";
+                if (parseInt(quant) < parseInt(numero) && parseInt(quant) !== 1) {
+                    document.getElementById('titulo_res').innerHTML = quant + "* publicações mais recentes** comentadas por " + nome + '<p style="font-size: small;margin-top:6px">*Número de publicações encontradas menor que o limite especificado</p><p style="font-size: small;">**Últimas publicações que foram comentadas por alguém</p>';
+                } else {
+                    if (parseInt(quant) === parseInt(numero) && parseInt(quant) !== 1) {
+                        document.getElementById('titulo_res').innerHTML = quant + " publicações mais recentes* comentadas por " + nome + '<p style="font-size: small;margin-top:6px">*Últimas publicações que foram comentadas por alguém</p>';
+                    }
+                    if (parseInt(quant) === 1) {
+                        document.getElementById('titulo_res').innerHTML = "Publicação* mais recente** comentada por " + nome + '<p style="font-size: small;margin-top:6px">*Número de publicações encontradas menor que o limite especificado</p><p style="font-size: small;">**Última publicação que foi comentada por alguém</p>';
+                    }
+                }
+                
+
+                document.getElementById('resp').innerHTML = str_pronta;
+            } else {
+                document.getElementById('panel_aviso').style.display = "block";
+                document.getElementById('voltar').style.display = "none";
+                document.getElementById('titulo_aviso').innerHTML = "Não foram encontradas publicações comentadas por <b>" + nome + '</b>';
+            }
+
+            var frequency_list = localStorage.getItem("freq_autores");
+            //document.getElementById('resp2').innerHTML = frequency_list;
+            json_autores = JSON.parse(frequency_list);
+
+            var cont = 6.0;
+            var cont2 = 1.0;
+            var m1 = 0;
+
+            var contador = Object.keys(json_autores).length;
+            var json_autores_sorted = {};
+            json_autores_sorted = json_autores.sort(function (a, b) {
+                return b.size - a.size;
+            });
+            if (Object.keys(json_autores_sorted).length < 50) {
+                for (var l = 0; l < Object.keys(json_autores_sorted).length; l++) {
+                    teste2[l] = json_autores_sorted[l];
+
+                }
+            } else {
+                for (var l = 0; l < 50; l++) {
+                    teste2[l] = json_autores_sorted[l];
+                }
+            }
+            console.log(teste2);
+            var contador = Object.keys(teste2).length;
+            document.getElementById('subtitulo').innerHTML = 'As ' + Object.keys(teste2).length + ' palavras mais usadas por ' + nome;
+
+            //console.log(json_autores_sorted);
+            for (var j = 0; j < 101; j = j + 20) {
+                cont = cont / 1.2;
+                if ((parseInt(teste2[Object.keys(teste2)[0]].size) > 5) && (parseInt(teste2[Object.keys(teste2)[0]].size) <= j + 20)) {
+                    //console.log(teste2[Object.keys(teste2)[0]].size);
+                    mult = cont;
+
+                }
+            if ((parseInt(teste2[Object.keys(teste2)[0]].size) === 1 )){
+                    mult = 20;
+            }
+            if ((parseInt(teste2[Object.keys(teste2)[0]].size) > 1) && (parseInt(teste2[Object.keys(teste2)[0]].size) <= 5))
+                    mult = 10;
+            }
+            for (var k = 100; k < 1001; k = k + 50) {
+
+                if ((parseInt(teste2[Object.keys(teste2)[0]].size) > k) && (parseInt(teste2[Object.keys(teste2)[0]].size) <= k + 50)) {
+
+                    mult = 1;
+
+                }
+            }
+            if (teste2[Object.keys(teste2)[0]].size > 115) {
+                m1 = 1;
+                for (var m = 0; m < Object.keys(teste2).length; m++) {
+                    if ((teste2[Object.keys(teste2)[m]].size % 2) === 0) {
+                        teste2[Object.keys(teste2)[m]].size = parseInt(teste2[Object.keys(teste2)[m]].size / 2);
+
+                    } else {
+                        teste2[Object.keys(teste2)[m]].size = parseInt(teste2[Object.keys(teste2)[m]].size / 2) + 1;
+
+                    }
+                }
+            }
+            //console.log(json_autores_sorted);
+
+            if(contador>0 && contador<10){
+            var width = 700;
+            var height = 300;
+        }
+        if(contador>=10 && contador<20){
+            var width = 900;
+            var height = 400;
+        }
+        if(contador>=20 && contador<30){
+            var width = 1100;
+            var height = 500;
+        }
+        if(contador>=40 && contador<50){
+            var width = 1250;
+            var height = 600;
+        }
+        if(contador===50){
+            var width = 1400;
+            var height = 700;
+        }
+            
+            
+
+
+            var color = d3.scale.linear()
+                    .domain([0, 1, 2, 3, 4, 5, 6, 10, 15, 20, 100])
+                    .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+
+            d3.layout.cloud().size([width, height])
+                    .words(teste2)
+                    .rotate(0)
+                    .fontSize(function (d) {
+
+                        return d.size * parseInt(mult);
+                    })
+                    .on("end", draw)
+                    .start();
+
+            function draw(words) {
+                d3.select("#cloud_c").append("svg")
+                        .attr("width", width / 1.3)
+                        .attr("height", height / 1.3)
+                        .attr("class", "wordcloud")
+                        .append("g")
+                        // without the transform, words words would get cutoff to the left and top, they would
+                        // appear outside of the SVG area
+                        .attr("transform", "translate(" + (width - (width / 1.5)) + "," + (height - (height / 1.6)) + ")")
+                        .selectAll("text")
+                        .data(words)
+                        .enter().append("text")
+                        .style("font-size", function (d) {
+
+                            return d.size + "px";
+                        })
+                        .style("fill", function (d, i) {
+                            return color(i);
+                        })
+                        .attr("transform", function (d) {
+                            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                        })
+                        .text(function (d) {
+                            return d.text;
+                        })
+                        .on("mouseover", function (d) {
+                            d3.select(this).style("fill", "#0f6282");
+
+                        })
+                        .on("mouseout", function (d, i) {
+                            d3.select(this).style("fill", color(i));
+                        })
+                        .append("title")
+                        .text(function (d) {
+                            console.log(d.size);
+                            if (m1 === 0) {
+                                return parseInt(d.size) / parseInt(mult);
+                            } else {
+                                if ((parseInt(d.size) % 2) === 0) {
+                                    return (parseInt(d.size) * 2);
+                                }
+                                if ((parseInt(d.size) % 2) !== 0) {
+
+                                    return ((parseInt(d.size) * 2) - 1);
+                                }
+                            }
+                            // return d.size;
+                        });
+            }
+        </script>
+    </body>
+
+</html>

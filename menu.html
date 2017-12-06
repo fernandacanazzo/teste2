@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -28,20 +28,282 @@
                     <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a style="margin-top: 4px;" href="#"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                    <li><a style="margin-top: 4px;" href="http://www.fernandacanazzo.github.io/teste2/index.html"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
                 </ul>
 
             </div>
         </nav>
-        <h2 id="nome"></h2>
+        <div class="container">
+            <div class="row">
 
-                       
+                <div class="col-md-12">
+                    <div class="panel-body text-center" style="background-color: #fefefe;">
+                        <button class="btn btn-xs btn-default text-left" id="voltar" style="display:block; position: fixed; margin-top:10px;font-size:large;border-bottom-style:none; height:30px; width:30px;border-radius: 50%;" type="button" onclick="location.href = 'http://www.fernandacanazzo.github.io/teste2/index.html;'"><span class="glyphicon glyphicon-arrow-left" style="color:#333333"></span></button>
+
+                        <h2 id="nome"></h2>
+
+                        <br><br>
+                        <div class="row" id="row1">
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-primary " id="panel1" style="margin-right:25px;border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe; border-bottom-color:#fefefe; height:255px; width: 100%; background-color: #fbfbfb">
+                                    <div class="panel-body text-center" id="div1" style="height:210px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe;">
+                                        <span class="glyphicon glyphicon-comment" style="font-size: x-large; color:#cccccc;margin-right: 12px; margin-top:12px;"></span><a style="color: #333333; font-size: x-large; text-decoration: none;">Publicações mais recentes comentadas por alguém <span style="font-size: small" title="Publicação mais recente é aquela que recebeu algum comentário por último" class=" text-primary glyphicon glyphicon-info-sign"></span></a> 
+                                        <div class="input-group" style="margin-top: 10px; margin-left: auto; margin-right: auto; width:50%">
+                                            <input type="text" id="nome1"  class="form-control text-center" placeholder="Nome">
+                                            <span class="input-group-btn" >
+                                                <button class="btn btn-default" title="Nome completo no Facebook"><span class="glyphicon glyphicon-question-sign" ></span>
+</button>
+                                    
+
+                                          </span> 
+                                        </div>
+                                        
+                                        <div class="input-group" style="margin-top: 5px; margin-left: auto; margin-right: auto; width:70%">
+                                            <input type="text" id="numero1"  class="form-control text-center" placeholder="Número de publicações" >
+                                            <span class="input-group-btn" >
+                                                <button class="btn btn-default" title="Máximo 1000 publicações"><span class="glyphicon glyphicon-question-sign" ></span></button>
+                                                <button class="btn btn-primary" id="bt_principal" type="submit" onclick="rf01();">OK</button>
+
+                                          </span> 
+ 
+                                        </div>
+
+                                    </div>
+                                    <div class="panel-body text-left" id="div11" style="border-top-color:#f6f6f6; border-top-style: solid; border-top-width: 1px; background-color: #f6f6f6; height:44px">
+                                        <a href="#" id="ler1" class=" text-primary" onclick="clickar1();"> <span class="glyphicon glyphicon-plus text-primary" style="font-size: large; margin-right: 6px;"></span></a><p id="p1"><br>&nbsp</p>
+
+                                        <p id="col1" style="color:#333333; display:none; font-size:small; margin-left:8px">Essa opção mostra os seguintes dados das publicações mais recentes que foram comentadas por alguém:<br>&#9679 Descrições <br>&#9679 Autores <br>&#9679 Datas dos comentários<br>&#9679 Nuvem de palavras dos comentários</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="panel panel-primary text-left" id="panel2" style="border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe; border-bottom-color:#fefefe; margin-left:-25px;height:150px; width: 100%; background-color: #fbfbfb">
+                                    <div class="panel-body" id="div2" style="height:105px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe;">
+                                        <span class="glyphicon glyphicon-comment" style="font-size: x-large; color:#cccccc;margin-right: 12px; margin-top:12px;"></span><a style="color: #333333; font-size: x-large; text-decoration: none;" href="#">Publicações mais recentes comentadas por alguém em um período</a> 
+                                    </div>
+                                    <div class="panel-body" id="div22" style="border-top-color:#f6f6f6; border-top-style: solid; border-top-width: 1px; background-color: #f6f6f6; height:44px">
+                                        <a href="#" id="ler2" class="text-left text-primary" onclick="clickar2();"> <span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span></a><p id="p2"><br>&nbsp</p>
+
+                                        <p id="col2" style="color:#333333; display:none; font-size:small; margin-left:8px">Essa opção mostra os seguintes dados das publicações mais recentes que foram comentadas por alguém dentro de um determinado período:<br>&#9679 Descrições <br>&#9679 Autores <br>&#9679 Datas dos comentários<br>&#9679 Nuvem de palavras dos comentários</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-5  col-md-offset-1">
+                                <div class="panel panel-primary text-left" id="panel3" style="margin-top:-15px;margin-right:25px;border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe; border-bottom-color:#fefefe;height:150px; width: 100%; background-color: #fbfbfb">
+                                    <div class="panel-body" id="div3" style="height:105px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe;">
+                                        <span class="glyphicon glyphicon-search" style="font-size: x-large; color:#cccccc;margin-right: 12px; margin-top:12px;"></span><a style="color: #333333; font-size: x-large; text-decoration: none;" href="#">Quantidade de publicações com uma palavra específica</a> 
+                                    </div>
+                                    <div class="panel-body" id="div33" style="border-top-color:#f6f6f6; border-top-style: solid; border-top-width: 1px; background-color: #f6f6f6; height:44px">
+                                        <a href="#panel3" id="ler3" class="text-left text-primary" onclick="clickar3();"> <span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span></a><p id="p3"><br>&nbsp</p>
+
+                                        <p id="col3" style="color:#333333; display:none; font-size:small; margin-left:8px">Essa opção mostra os seguintes dados das publicações mais recentes que contêm uma determinada palavra:<br>&#9679 Descrições <br>&#9679 Autores <br>&#9679 Datas<br>&#9679 Nuvem de palavras das descrições</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="panel panel-primary text-left" id="panel4" style="margin-top:-15px;margin-left:-25px;border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe; border-bottom-color:#fefefe;height:150px; width: 100%; background-color: #fbfbfb">
+                                    <div class="panel-body" id="div4" style="height:105px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe;">
+                                        <span class="glyphicon glyphicon-thumbs-up" style="font-size: x-large; color:#cccccc;margin-right: 12px; margin-top:12px;"></span><a style="color: #333333; font-size: x-large; text-decoration: none;" href="#">Quantidade de publicações por dia e suas reações</a> 
+                                    </div>
+                                    <div class="panel-body" id="div44" style="border-top-color:#f6f6f6; border-top-style: solid; border-top-width: 1px; background-color: #f6f6f6; height:44px">
+                                        <a href="#panel4"  id="ler4" class="text-left text-primary" onclick="clickar4();"> <span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span></a><p id="p4"><br>&nbsp</p>
+
+                                        <p id="col4" style="color:#333333; display:none; font-size:small; margin-left:8px">Essa opção mostra os seguintes dados das publicações em um gráfico de barras:<br>&#9679 Quantidade de publicações por dia<br>&#9679 Quantidade de reações que essas publicações possuem</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-primary text-left" id="panel5" style="margin-top:-15px;margin-right:25px;border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe; border-bottom-color:#fefefe;height:150px; width: 100%; background-color: #fbfbfb">
+                                    <div class="panel-body" id="div5" style="height:105px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe;">
+                                        <span class="glyphicon glyphicon-star" style="font-size: x-large; color:#cccccc;margin-right: 12px; margin-top:12px;"></span><a style="color: #333333; font-size: x-large; text-decoration: none;" href="#">N publicações mais populares</a> 
+                                    </div>
+                                    <div class="panel-body" id="div55" style="border-top-color:#f6f6f6; border-top-style: solid; border-top-width: 1px; background-color: #f6f6f6; height:44px">
+                                        <a href="#panel5" id="ler5" class="text-left text-primary" onclick="clickar5();"> <span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span></a><p id="p5"><br>&nbsp</p>
+
+                                        <p id="col5" style="color:#333333; display:none; font-size:small; margin-left:8px">Essa opção mostra um gráfico de barras com o seguinte dado das publicações mais recentes:<br>&#9679 N publicações mais populares* <br><br>*Popularidade: (reações + comentários) / membros do grupo</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="panel panel-primary text-left" id="panel6" style="margin-top:-15px;margin-left:-25px;border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe; border-bottom-color:#fefefe;height:150px; width: 100%; background-color: #fbfbfb">
+                                    <div class="panel-body" id="div6" style="height:105px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe;">
+                                        <span class="glyphicon glyphicon-stats" style="font-size: x-large; color:#cccccc;margin-right: 12px; margin-top:12px;"></span><a style="color: #333333; font-size: x-large; text-decoration: none;" href="#">Reações às publicações mais recentes</a> 
+                                    </div>
+                                    <div class="panel-body" id="div66" style="border-top-color:#f6f6f6; border-top-style: solid; border-top-width: 1px; background-color: #f6f6f6; height:44px">
+                                        <a href="#panel6"  id="ler6" class="text-left text-primary" onclick="clickar6();"> <span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span></a><p id="p6"><br>&nbsp</p>
+
+                                        <p id="col6" style="color:#333333; display:none; font-size:small; margin-left:8px">Essa opção mostra um gráfico de barras com os seguintes dados das publicações mais recentes:<br>&#9679 Quantidade de cada tipo de reação às publicações</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-primary text-left" id="panel7" style="margin-top:-15px;margin-right:25px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe; border-bottom-color:#fefefe;height:150px; width: 100%; background-color: #fbfbfb">
+                                    <div class="panel-body" id="div7" style="height:105px; border-left-color:#fefefe; border-right-color:#fefefe; border-top-color:#fefefe;">
+                                        <span class="glyphicon glyphicon-comment" style="font-size: x-large; color:#cccccc;margin-right: 12px; margin-top:12px;"></span><a style="color: #333333; font-size: x-large; text-decoration: none;" href="#">Pessoas que mais comentaram</a> 
+                                    </div>
+                                    <div class="panel-body" id="div77" style="border-top-color:#f6f6f6; border-top-style: solid; border-top-width: 1px; background-color: #f6f6f6; height:44px">
+                                        <a href="#panel7"  id="ler7" class="text-left text-primary" onclick="clickar7();"> <span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span></a><p id="p7"><br>&nbsp</p>
+
+                                        <p id="col7" style="color:#333333; display:none; font-size:small; margin-left:8px">Essa opção mostra uma nuvem com até 10 pessoas que mais comentaram nas publicações<br><br></p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <script type="text/javascript">
             var id_grupo = localStorage.getItem("id_grupo");
+            var array = [];
+            function rf01() {
+                var numero1 = $("#numero1").val();
+                var nome1 = $("#nome1").val();
+                localStorage.setItem("numero1", numero1);
+                localStorage.setItem("nome1", nome1);
+                location.href = 'http://www.fernandacanazzo.github.io/teste2/01.html';
+            }
+
+            // localStorage.setItem("numero2", numero2);
+           
             array = id_grupo.split('_;_', 2);
             document.getElementById('nome').innerHTML = "O que você quer visualizar no grupo <b>" + array[1] + "</b>?";
 
+            function clickar1() {
+                if (document.getElementById("col1").style.display === "none") {
+                    document.getElementById("col1").style.display = "inline-block";
+                    document.getElementById("ler1").innerHTML = '<span class="glyphicon glyphicon-minus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("panel1").style.height = "381px";
+                    document.getElementById("div11").style.height = "170px";
+                    document.getElementById("p1").style.display = "none";
+                } else {
+                    document.getElementById("ler1").innerHTML = '<span class="glyphicon glyphicon-plus" style="font-size: large;margin-right: 6px"></span>';
+                    document.getElementById("col1").style.display = "none";
+                    document.getElementById("panel1").style.height = "255px";
+                    document.getElementById("div11").style.height = "44px";
+                }
+            }
+
+            function clickar2() {
+                if (document.getElementById("col2").style.display === "none") {
+                    document.getElementById("col2").style.display = "inline-block";
+                    document.getElementById("ler2").innerHTML = '<span class="glyphicon glyphicon-minus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("panel2").style.height = "321px";
+                    document.getElementById("div22").style.height = "215px";
+                    document.getElementById("p2").style.display = "none";
+                } else {
+                    document.getElementById("ler2").innerHTML = '<span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("col2").style.display = "none";
+                    document.getElementById("panel2").style.height = "150px";
+                    document.getElementById("div22").style.height = "44px";
+                }
+            }
+
+            function clickar3() {
+                if (document.getElementById("col3").style.display === "none") {
+                    document.getElementById("col3").style.display = "inline-block";
+                    document.getElementById("ler3").innerHTML = '<span class="glyphicon glyphicon-minus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("panel3").style.height = "321px";
+                    document.getElementById("div33").style.height = "215px";
+                    document.getElementById("p3").style.display = "none";
+                } else {
+                    document.getElementById("ler3").innerHTML = '<span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("col3").style.display = "none";
+                    document.getElementById("panel3").style.height = "150px";
+                    document.getElementById("div33").style.height = "44px";
+                }
+            }
+
+            function clickar4() {
+                if (document.getElementById("col4").style.display === "none") {
+                    document.getElementById("col4").style.display = "inline-block";
+                    document.getElementById("ler4").innerHTML = '<span class="glyphicon glyphicon-minus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("panel4").style.height = "306px";
+                    document.getElementById("div44").style.height = "200px";
+                    document.getElementById("p4").style.display = "none";
+                } else {
+                    document.getElementById("ler4").innerHTML = '<span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("col4").style.display = "none";
+                    document.getElementById("panel4").style.height = "150px";
+                    document.getElementById("div44").style.height = "44px";
+                }
+            }
+
+            function clickar5() {
+                if (document.getElementById("col5").style.display === "none") {
+                    document.getElementById("col5").style.display = "inline-block";
+                    document.getElementById("ler5").innerHTML = '<span class="glyphicon glyphicon-minus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("panel5").style.height = "261px";
+                    document.getElementById("div55").style.height = "161px";
+                    document.getElementById("p5").style.display = "none";
+                } else {
+                    document.getElementById("ler5").innerHTML = '<span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("col5").style.display = "none";
+                    document.getElementById("panel5").style.height = "150px";
+                    document.getElementById("div55").style.height = "44px";
+                }
+            }
+
+            function clickar6() {
+                if (document.getElementById("col6").style.display === "none") {
+                    document.getElementById("col6").style.display = "inline-block";
+                    document.getElementById("ler6").innerHTML = '<span class="glyphicon glyphicon-minus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("panel6").style.height = "261px";
+                    document.getElementById("div66").style.height = "165px";
+                    document.getElementById("p6").style.display = "none";
+                } else {
+                    document.getElementById("ler6").innerHTML = '<span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("col6").style.display = "none";
+                    document.getElementById("panel6").style.height = "150px";
+                    document.getElementById("div66").style.height = "44px";
+                }
+            }
+
+            function clickar7() {
+                if (document.getElementById("col7").style.display === "none") {
+                    document.getElementById("col7").style.display = "inline-block";
+                    document.getElementById("ler7").innerHTML = '<span class="glyphicon glyphicon-minus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("panel7").style.height = "200px";
+                    document.getElementById("div77").style.height = "104px";
+                    document.getElementById("p7").style.display = "none";
+                } else {
+                    document.getElementById("ler7").innerHTML = '<span class="glyphicon glyphicon-plus" style="font-size: large; margin-right: 6px;"></span>';
+                    document.getElementById("col7").style.display = "none";
+                    document.getElementById("panel7").style.height = "150px";
+                    document.getElementById("div77").style.height = "44px";
+                }
+            }
 
         </script>
     </body>

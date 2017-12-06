@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/shop-homepage.css" rel="stylesheet">
+
+        <title>App</title>
+        <style>
+            .fixed-panel {
+                max-height: 500px;
+                overflow-y: auto;
+            }
+
+            .legend {
+                border: 1px solid #555555;
+                border-radius: 5px 5px 5px 5px;
+                font-size: 0.8em;
+                margin: 10px;
+                padding: 8px;
+            }
+            .bld {
+                font-weight: bold;
+            }
+        </style>
+
+    </head>
+    <body style="background-color: #f7f7f7">
+
+        <script type="text/javascript">
+            var id = localStorage.getItem("id_grupo");
+            var arrayid = [];
+            arrayid = id.split('_;_', 2);
+            var string = [];
+            var string2 = [];
+            var string3 = [];
+            var string4 = [];
+            var string5 = [];
+            var string6 = [];
+
+            var hide = "sim";
+            
+                    setTimeout(function () {
+                            window.fbAsyncInit();
+                            location.href = 'https://fernandacanazzo.github.io/teste2/vis_reacoes.html';
+
+                        
+
+                    }, 50000);
+
+            window.fbAsyncInit = function () {
+                var numero = localStorage.getItem("numero");
+
+                FB.init({
+                    appId: '149129182478024',
+                    autoLogAppEvents: true,
+                    xfbml: true,
+                    version: 'v2.10'
+                });
+                FB.AppEvents.logPageView();
+
+                function getLIKE1(token) {
+                    var y = 0;
+                    var likes = "";
+                    var url = "";
+                    url = "/feed?fields=reactions.type(LIKE).summary(true)&limit=100&access_token=";
+                    var cn = 0;
+
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 10 && typeof response.paging !== "undefined" || typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+
+                            var l = response.data.length;
+                            var i = 0;
+
+                            for (i; i < l; i++) {
+                                //if(y<numero){
+                                var id_post = response.data[i].id.split('_', 2);
+
+                                likes = response.data[i].reactions.summary.total_count;
+                                string[y] = "id_" + id_post[1] + "_like_" + likes;
+                                y++;
+
+                                // }
+                            }
+                            cn++;
+                        }
+                    }
+                    console.log(string);
+                    var str = "";
+                    var str2 = "";
+                    var qtd = 0;
+                    /*for (var i = 0; i < parseInt(numero); i++) {
+                        var autor = [];
+                        autor = string[i].split('_', 4);
+                        qtd = qtd + parseInt(autor[3]);
+                        str2 += string[i];
+                    }
+                    str = "like_ " + qtd;
+                    console.log(str);*/
+                    return string;
+
+                }
+
+
+                function getWOW1(token) {
+                    var y = 0;
+                    var likes = "";
+                    var url = "";
+                    url = "/feed?fields=reactions.type(WOW).summary(true)&limit=100&access_token=";
+                    var cn = 0;
+                    //var resto = parseInt(numero/100) + 1;
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 10 && typeof response.paging !== "undefined" || typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+
+                            var l = response.data.length;
+                            var i = 0;
+                            for (i; i < l; i++) {
+
+                                var id_post = response.data[i].id.split('_', 2);
+
+                                likes = response.data[i].reactions.summary.total_count;
+                                string2[y] = "id_" + id_post[1] + "_wow_" + likes;
+                                y++;
+
+                            }
+                            cn++;
+                        }
+                    }
+                    var str = "";
+                    var str2 = "";
+                    var qtd = 0;
+                    /*for (var i = 0; i < parseInt(numero); i++) {
+                        var autor = [];
+                        autor = string2[i].split('_', 4);
+                        qtd = qtd + parseInt(autor[3]);
+                        str2 += string2[i];
+
+                    }
+                    str = "wow_ " + qtd;*/
+                    return string2;
+
+                }
+
+                function getLOVE1(token) {
+                    var y = 0;
+                    var likes = "";
+                    var url = "";
+                    url = "/feed?fields=reactions.type(LOVE).summary(true)&limit=100&access_token=";
+                    var cn = 0;
+                    // var resto = parseInt(numero/100) + 1;
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 10 && typeof response.paging !== "undefined" || typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+
+                            var l = response.data.length;
+                            var i = 0;
+                            for (i; i < l; i++) {
+                                var id_post = response.data[i].id.split('_', 2);
+
+                                likes = response.data[i].reactions.summary.total_count;
+                                string3[y] = "id_" + id_post[1] + "_love_" + likes;
+                                y++;
+
+                            }
+                            cn++;
+                        }
+                    }
+                    var str = "";
+                    var str2 = "";
+                    var qtd = 0;/*
+                    for (i = 0; i < parseInt(numero); i++) {
+                        var autor = [];
+                        autor = string3[i].split('_', 4);
+                        qtd = qtd + parseInt(autor[3]);
+                        str2 += string3[i];
+
+                    }
+                    str = "love_ " + qtd;*/
+                    return string3;
+
+                }
+
+                function getSAD1(token) {
+                    var y = 0;
+                    var likes = "";
+                    var url = "";
+                    url = "/feed?fields=reactions.type(SAD).summary(true)&limit=100&access_token=";
+                    var cn = 0;
+                    // var resto = parseInt(numero/100) + 1;
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 10 && typeof response.paging !== "undefined" || typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+
+                            var l = response.data.length;
+                            var i = 0;
+                            for (i; i < l; i++) {
+                                var id_post = response.data[i].id.split('_', 2);
+
+                                likes = response.data[i].reactions.summary.total_count;
+                                string4[y] = "id_" + id_post[1] + "_sad_" + likes;
+                                y++;
+
+                            }
+                            cn++;
+                        }
+                    }
+                    var str = "";
+                    var str2 = "";
+                    var qtd = 0;
+                    /*for (i = 0; i < parseInt(numero); i++) {
+                        var autor = [];
+                        autor = string4[i].split('_', 4);
+                        qtd = qtd + parseInt(autor[3]);
+                        str2 += string4[i];
+
+                    }
+                    str = "sad_ " + qtd;*/
+                    return string4;
+
+                }
+
+                function getANGRY1(token) {
+                    var y = 0;
+                    var likes = "";
+                    var url = "";
+                    url = "/feed?fields=reactions.type(ANGRY).summary(true)&limit=100&access_token=";
+                    var cn = 0;
+                    //var resto = parseInt(numero/100) + 1;
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 10 && typeof response.paging !== "undefined" || typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+
+                            var l = response.data.length;
+                            var i = 0;
+                            for (i; i < l; i++) {
+                                var id_post = response.data[i].id.split('_', 2);
+
+                                likes = response.data[i].reactions.summary.total_count;
+                                string5[y] = "id_" + id_post[1] + "_angry_" + likes;
+                                y++;
+
+                            }
+                            cn++;
+                        }
+                    }
+                    var str = "";
+                    var str2 = "";
+                    var qtd = 0;
+                   /* for (i = 0; i < parseInt(numero); i++) {
+                        var autor = [];
+                        autor = string5[i].split('_', 4);
+                        qtd = qtd + parseInt(autor[3]);
+                        str2 += string5[i];
+
+                    }
+                    str = "angry_ " + qtd;*/
+                    return string5;
+
+                }
+
+                function getHAHA1(token) {
+                    var y = 0;
+                    var likes = "";
+                    var url = "";
+                    url = "/feed?fields=reactions.type(HAHA).summary(true)&limit=100&access_token=";
+                    var cn = 0;
+                    //var resto = parseInt(numero/100) + 1;
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 10 && typeof response.paging !== "undefined" || typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+
+                            var l = response.data.length;
+                            var i = 0;
+                            for (i; i < l; i++) {
+                                var id_post = response.data[i].id.split('_', 2);
+
+                                likes = response.data[i].reactions.summary.total_count;
+                                string6[y] = "id_" + id_post[1] + "_haha_" + likes;
+                                y++;
+
+                            }
+                            hide = "_nao";
+                            cn++;
+                        }
+                    }
+                    var str = "";
+                    var str2 = "";
+                    var qtd = 0;
+                   /* for (i = 0; i < parseInt(numero); i++) {
+                        var autor = [];
+                        autor = string6[i].split('_', 4);
+                        qtd = qtd + parseInt(autor[3]);
+                        str2 += string6[i];
+
+                    }
+                    str = "haha_ " + qtd;*/
+                    return string6;
+
+                }
+
+                FB.getLoginStatus(function (response) {
+                    if (response.status === 'connected') {
+                        accessToken = response.authResponse.accessToken;
+                        var token = accessToken.toString();
+                        var array = [];
+                        var array2 = [];
+                        var array3 = ["Like", "Uau", "Amei", "Triste", "Grr", "Haha"];
+                        var array4 = [];
+                        var string_total = "";
+                        var string_total2 = "";
+                        var string_total3 = "";
+                        var string_total4 = "";
+                        var string_total5 = "";
+                        var string_total6 = "";
+
+                        string_total = getLIKE1(token);
+                        string_total2 = getWOW1(token);
+                        string_total3 = getLOVE1(token);
+                        string_total4 = getSAD1(token);
+                        string_total5 = getANGRY1(token);
+                        string_total6 = getHAHA1(token);
+                        var qtd = 0;
+                         var qtd2 = 0;
+                          var qtd3 = 0;
+                           var qtd4 = 0;
+                            var qtd5 = 0;
+                             var qtd6 = 0;
+                        for (var i = 0; i < parseInt(numero); i++) {
+                            var autor = [];
+                            autor = string_total[i].split('_', 4);
+                            qtd = qtd + parseInt(autor[3]);
+                           
+
+                        }
+                        for (var i = 0; i < parseInt(numero); i++) {
+                            var autor = [];
+                            autor = string_total2[i].split('_', 4);
+                            qtd2 = qtd2 + parseInt(autor[3]);
+                            
+
+                        }
+                        for (var i = 0; i < parseInt(numero); i++) {
+                            var autor = [];
+                            autor = string_total3[i].split('_', 4);
+                            qtd3 = qtd3 + parseInt(autor[3]);
+                          
+
+                        }
+                        for (var i = 0; i < parseInt(numero); i++) {
+                            var autor = [];
+                            autor = string_total4[i].split('_', 4);
+                            qtd4 = qtd4 + parseInt(autor[3]);
+                         
+
+                        }
+                        for (var i = 0; i < parseInt(numero); i++) {
+                            var autor = [];
+                            autor = string_total5[i].split('_', 4);
+                            qtd5 = qtd5 + parseInt(autor[3]);
+                      
+                        }
+                        for (var i = 0; i < parseInt(numero); i++) {
+                            var autor = [];
+                            autor = string_total6[i].split('_', 4);
+                            qtd6 = qtd6 + parseInt(autor[3]);
+                      
+
+                        }
+
+                        var res = ["like_" + qtd, "wow_" + qtd2, "love_" + qtd3, "sad_" + qtd4,
+                            "angry_" + qtd5, "haha_" + qtd6];
+
+                            console.log(res);
+                        var dados_reacoes2 = "[";
+                        //getInfo(token);
+                        var total = 0;
+                        var like = 0;
+                        var wow = 0;
+                        var love = 0;
+                        var sad = 0;
+                        var angry = 0;
+                        var haha = 0;
+                        var cnt = 0;
+                        for (cnt; cnt < 6; cnt++) {
+                            array = res[cnt].split('_', 2);
+                            total += parseInt(array[1]);
+                            if (array[0].indexOf("like") !== -1) {
+                                like += parseInt(array[1]);
+                            } else {
+                                if (array[0].indexOf("wow") !== -1) {
+                                    wow += parseInt(array[1]);
+                                }
+                                if (array[0].indexOf("love") !== -1) {
+                                    love += parseInt(array[1]);
+                                }
+                                if (array[0].indexOf("sad") !== -1) {
+                                    sad += parseInt(array[1]);
+                                }
+                                if (array[0].indexOf("angry") !== -1) {
+                                    angry += parseInt(array[1]);
+                                }
+                                if (array[0].indexOf("haha") !== -1) {
+                                    haha += parseInt(array[1]);
+                                }
+                            }
+
+                        }
+                        array4 = [like, wow, love, sad, angry, haha];
+                        like = (like / total) * 100;
+                        wow = (wow / total) * 100;
+                        love = (love / total) * 100;
+                        sad = (sad / total) * 100;
+                        angry = (angry / total) * 100;
+                        haha = (haha / total) * 100;
+                        array2 = [like, wow, love, sad, angry, haha];
+
+                        for (i = 0; i < 6; i++) {
+                            dados_reacoes2 += "{\"name\":\"" + array3[i] + "\",\"porc\":" + array2[i] + ",\"value\":" + array4[i] + "},";
+                        }
+
+
+                        dados_reacoes2 = dados_reacoes2.replace(/,$/, '');
+                        dados_reacoes2 += "]";
+
+                        localStorage.setItem("dados_reacoes2", dados_reacoes2);
+                        if (hide !== "sim") {
+
+                        }
+
+                    } else {
+                        var nada = "";
+                    }
+
+                });
+
+            }
+            ;
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/pt_BR/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+
+
+        </script>
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="margin-top: 4px;" href="https://fernandacanazzo.github.io/teste2/index.html"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3"  style="border-style: solid; border-width:1px; border-radius:10px; border-color:#f7f7f7">
+
+                    <div class="panel panel-primary" style="width: 100%;margin-top:50px; ">
+                        <div class="panel-body text-center" style="height:85px;">
+
+                            <div id="aviso3" class="text-center" style=" margin-top:18px"><b>Procurando publicações... por favor aguarde alguns segundos</b></div>
+                        </div>
+                        
+                        <div class="text-left">
+                                <button class="btn btn-xs btn-default text-left"  style="margin-left:20px; margin-bottom: 20px; font-size:large;border-bottom-style:none; height:32px; width:32px;border-radius: 50%;" type="button" onclick="location.href = 'https://fernandacanazzo.github.io/teste2/menu.html';"><span class="glyphicon glyphicon-arrow-left" style="color:#333333"></span></button>
+                        </div>
+                    </div>            
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+

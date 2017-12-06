@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/shop-homepage.css" rel="stylesheet">
+        <title>App</title>
+        <style>.fixed-panel {
+                max-height: 500px;
+                overflow-y: auto;
+            }</style>
+
+    </head>
+    <body style="background-color: #f7f7f7">
+
+        <script type="text/javascript">
+            var id = localStorage.getItem("id_grupo");
+            var arrayid = [];
+            arrayid = id.split('_;_', 2);
+            var string = [];
+            var string2 = [];
+            var string3 = [];
+            var string4 = [];
+
+            var hide = "sim";
+
+
+            setTimeout(function () {
+                window.fbAsyncInit();
+                location.href = 'http://www.fernandacanazzo.github.io/teste2/vis_quantidade_publicacoes.html';
+
+            }, 50000);
+
+
+
+            window.fbAsyncInit = function () {
+                var numero = localStorage.getItem("numero");
+                var y = 0;
+
+                FB.init({
+                    appId: '149129182478024',
+                    autoLogAppEvents: true,
+                    xfbml: true,
+                    version: 'v2.10'
+                });
+                FB.AppEvents.logPageView();
+
+
+
+
+                function getInfo2(token) {
+                    var url = "";
+
+                    url = "/feed?fields=updated_time,reactions.summary(true)&limit=50&access_token=";
+                    console.log(url);
+                    var cn = 0;
+                    FB.api(
+                            "/" + arrayid[0] + url + token, doSomething);
+                    function doSomething(response) {
+                        if (cn < 20 && typeof response.paging !== "undefined" && typeof response.paging.next !== "undefined") {
+                            FB.api(response.paging.next, doSomething);
+                            var l = response.data.length;
+                            var i = 0;
+                            for (i; i < l; i++) {
+
+                                var reacoes = response.data[i].reactions.summary.total_count;
+                                var id_post = response.data[i].id.split('_', 2);
+                                var data_hora = response.data[i].updated_time.split('T', 2);
+                                var data = data_hora[0].split('-', 3);
+                                var hora = data_hora[1].split(':', 3);
+
+                                string[y] =  data[1] +  data[2] + data[0] + "reacoes_;_" + reacoes
+                                        + "_;_posts_;_" + l + "_;_" + data[2] + "_;_" + data[1] + "_;_" + data[0] + "_;_id " + id_post[1];
+                                y++;
+
+                            }
+                            hide = "nao";
+                            cn++;
+                        }
+
+                    }
+                    return string;
+                }
+
+                console.log(string);
+
+                FB.getLoginStatus(function (response) {
+                    if (response.status === 'connected') {
+                        accessToken = response.authResponse.accessToken;
+                        var token = accessToken.toString();
+                        var string_total = [];
+                        var res = [];
+                        // if(parseInt(n)<250)
+                        string_total = getInfo2(token);
+                        res = string_total;
+
+                        var str = [];
+                        var quant = 0;
+                        var posts = [];
+                        var cont = 0;
+                        var cont2 = 0;
+                        var ctd = 1;
+
+                        var str = "";
+                        var quant = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                        var quant2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                        var posts = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+                        var cont = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                        var cont2 = 0;
+                        var str_posts = "[";
+
+                        for (i = 0; i < parseInt(numero); i++) {
+
+                            str = res[i].split('_;_', 8);
+
+                            
+                                var ctd = 1;
+                                for (ctd; ctd < 13; ctd++) {
+                                    if (parseInt(str[5]) === ctd) {
+                                        switch (parseInt(str[4])) {
+                                            case 1:
+                                                quant[0] += parseInt(str[1]);
+                                                cont[0]++;
+                                                posts[0] = "{\"categorie\":\"" + "01/" + ctd + "\",\"values\":[{\"value\":" + quant[0] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[0] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 2:
+                                                quant[1] += parseInt(str[1]);
+                                                cont[1]++;
+                                                posts[1] = "{\"categorie\":\"" + "02/" + ctd + "\",\"values\":[{\"value\":" + quant[1] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[1] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 3:
+                                                quant[2] += parseInt(str[1]);
+                                                cont[2]++;
+                                                posts[2] = "{\"categorie\":\"" + "03/" + ctd + "\",\"values\":[{\"value\":" + quant[2] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[2] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 4:
+                                                quant[3] += parseInt(str[1]);
+                                                cont[3]++;
+                                                posts[3] = "{\"categorie\":\"" + "04/" + ctd + "\",\"values\":[{\"value\":" + quant[3] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[3] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 5:
+                                                quant[4] += parseInt(str[1]);
+                                                cont[4]++;
+                                                posts[4] = "{\"categorie\":\"" + "05/" + ctd + "\",\"values\":[{\"value\":" + quant[4] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[4] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 6:
+                                                quant[5] += parseInt(str[1]);
+                                                cont[5]++;
+                                                posts[5] = "{\"categorie\":\"" + "06/" + ctd + "\",\"values\":[{\"value\":" + quant[5] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[5] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 7:
+                                                quant[6] += parseInt(str[1]);
+                                                cont[6]++;
+                                                posts[6] = "{\"categorie\":\"" + "07/" + ctd + "\",\"values\":[{\"value\":" + quant[6] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[6] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 8:
+                                                quant[7] += parseInt(str[1]);
+                                                cont[7]++;
+                                                posts[7] = "{\"categorie\":\"" + "08/" + ctd + "\",\"values\":[{\"value\":" + quant[7] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[7] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 9:
+                                                quant[8] += parseInt(str[1]);
+                                                cont[8]++;
+                                                posts[8] = "{\"categorie\":\"" + "09/" + ctd + "\",\"values\":[{\"value\":" + quant[8] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[8] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 10:
+                                                quant[9] += parseInt(str[1]);
+                                                cont[9]++;
+                                                posts[9] = "{\"categorie\":\"" + "10/" + ctd + "\",\"values\":[{\"value\":" + quant[9] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[9] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 11:
+                                                quant[10] += parseInt(str[1]);
+                                                cont[10]++;
+                                                posts[10] = "{\"categorie\":\"" + "11/" + ctd + "\",\"values\":[{\"value\":" + quant[10] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[10] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 12:
+                                                quant[11] += parseInt(str[1]);
+                                                cont[11]++;
+                                                posts[11] = "{\"categorie\":\"" + "12/" + ctd + "\",\"values\":[{\"value\":" + quant[11] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[11] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 13:
+                                                quant[12] += parseInt(str[1]);
+                                                cont[12]++;
+                                                posts[12] = "{\"categorie\":\"" + "13/" + ctd + "\",\"values\":[{\"value\":" + quant[12] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[12] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 14:
+                                                quant[13] += parseInt(str[1]);
+                                                cont[13]++;
+                                                posts[13] = "{\"categorie\":\"" + "14/" + ctd + "\",\"values\":[{\"value\":" + quant[13] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[13] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 15:
+                                                quant[14] += parseInt(str[1]);
+                                                cont[14]++;
+                                                posts[14] = "{\"categorie\":\"" + "15/" + ctd + "\",\"values\":[{\"value\":" + quant[14] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[14] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 16:
+                                                quant[15] += parseInt(str[1]);
+                                                cont[15]++;
+                                                posts[15] = "{\"categorie\":\"" + "16/" + ctd + "\",\"values\":[{\"value\":" + quant[15] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[15] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 17:
+                                                quant[16] += parseInt(str[1]);
+                                                cont[16]++;
+                                                posts[16] = "{\"categorie\":\"" + "17/" + ctd + "\",\"values\":[{\"value\":" + quant[16] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[16] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 18:
+                                                quant[17] += parseInt(str[1]);
+                                                cont[17]++;
+                                                posts[17] = "{\"categorie\":\"" + "18/" + ctd + "\",\"values\":[{\"value\":" + quant[17] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[17] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 19:
+                                                quant[18] += parseInt(str[1]);
+                                                cont[18]++;
+                                                posts[18] = "{\"categorie\":\"" + "19/" + ctd + "\",\"values\":[{\"value\":" + quant[18] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[18] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 20:
+                                                quant[19] += parseInt(str[1]);
+                                                cont[19]++;
+                                                posts[19] = "{\"categorie\":\"" + "20/" + ctd + "\",\"values\":[{\"value\":" + quant[19] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[19] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 21:
+                                                quant[20] += parseInt(str[1]);
+                                                cont[20]++;
+                                                posts[20] = "{\"categorie\":\"" + "21/" + ctd + "\",\"values\":[{\"value\":" + quant[20] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[20] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 22:
+                                                quant[21] += parseInt(str[1]);
+                                                cont[21]++;
+                                                posts[21] = "{\"categorie\":\"" + "22/" + ctd + "\",\"values\":[{\"value\":" + quant[21] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[21] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 23:
+                                                quant[22] += parseInt(str[1]);
+                                                cont[22]++;
+                                                posts[22] = "{\"categorie\":\"" + "23/" + ctd + "\",\"values\":[{\"value\":" + quant[22] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[22] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 24:
+                                                quant[23] += parseInt(str[1]);
+                                                cont[23]++;
+                                                posts[23] = "{\"categorie\":\"" + "24/" + ctd + "\",\"values\":[{\"value\":" + quant[23] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[23] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 25:
+                                                quant[24] += parseInt(str[1]);
+                                                cont[24]++;
+                                                posts[24] = "{\"categorie\":\"" + "25/" + ctd + "\",\"values\":[{\"value\":" + quant[24] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[24] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 26:
+                                                quant[25] += parseInt(str[1]);
+                                                cont[25]++;
+                                                posts[25] = "{\"categorie\":\"" + "26/" + ctd + "\",\"values\":[{\"value\":" + quant[25] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[25] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 27:
+                                                quant[26] += parseInt(str[1]);
+                                                cont[26]++;
+                                                posts[26] = "{\"categorie\":\"" + "27/" + ctd + "\",\"values\":[{\"value\":" + quant[26] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[26] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 28:
+                                                quant[27] += parseInt(str[1]);
+                                                cont[27]++;
+                                                posts[27] = "{\"categorie\":\"" + "28/" + ctd + "\",\"values\":[{\"value\":" + quant[27] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[27] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 29:
+                                                quant[28] += parseInt(str[1]);
+                                                cont[28]++;
+                                                posts[28] = "{\"categorie\":\"" + "29/" + ctd + "\",\"values\":[{\"value\":" + quant[28] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[28] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 30:
+                                                quant[29] += parseInt(str[1]);
+                                                cont[29]++;
+                                                posts[29] = "{\"categorie\":\"" + "30/" + ctd + "\",\"values\":[{\"value\":" + quant[29] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[29] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+                                            case 31:
+                                                quant[30] += parseInt(str[1]);
+                                                cont[30]++;
+                                                posts[30] = "{\"categorie\":\"" + "31/" + ctd + "\",\"values\":[{\"value\":" + quant[30] + ",\"rate\":\"" + "Reações" + "\"},{\"value\":" + cont[30] + ",\"rate\":\"" + "Publicações" + "\"}]},";
+                                                break;
+
+                                        }
+                                    }
+                                }
+
+                            
+                        }
+
+                        for (var i = posts.length - 1; i >= 0; i--) {
+                            if (posts[i] === posts) {
+                                posts.splice(i, 1);
+                            }
+                        }
+                        str_posts += posts.join("");
+                        str_posts = str_posts.replace(/,$/, '');
+                        str_posts += "]";
+                        localStorage.setItem("str_posts", str_posts);
+                        
+                        if (hide !== "sim") {
+                        }
+                    } else {
+                        var nada = "";
+                    }
+                });
+
+            };
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/pt_BR/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+
+
+        </script>
+
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="margin-top: 4px;"><b>Aplicação para grupos</b></a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="margin-top: 4px;" href="http://www.fernandacanazzo.github.io/teste2/index.html"><span class="glyphicon glyphicon-search " style=" font-size:small;margin-right: 6px;"></span>Pesquisar grupo</a></li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3"  style="border-style: solid; border-width:1px; border-radius:10px; border-color:#f7f7f7">
+
+                    <div class="panel panel-primary" style="width: 100%;margin-top:50px; ">
+                        <div class="panel-body text-center" style="height:85px;">
+
+                            <div id="aviso3" class="text-center" style=" margin-top:18px"><b>Procurando publicações... por favor aguarde alguns segundos</b></div>
+                        </div>
+                        
+                        <div class="text-left">
+                                <button class="btn btn-xs btn-default text-left"  style="margin-left:20px; margin-bottom: 20px; font-size:large;border-bottom-style:none; height:32px; width:32px;border-radius: 50%;" type="button" onclick="location.href = 'http://www.fernandacanazzo.github.io/teste2/menu.html';"><span class="glyphicon glyphicon-arrow-left" style="color:#333333"></span></button>
+                        </div>
+                    </div>            
+
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+
+</html>
+
+
