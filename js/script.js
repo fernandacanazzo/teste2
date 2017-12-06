@@ -1,1 +1,0 @@
-var mykey = config2.MY_KEY;
